@@ -13,7 +13,8 @@ with open(os.path.join(os.path.dirname(__file__), "config.yaml"), mode='r') as s
     keys = yaml.load(stream=stream, Loader=yaml.FullLoader)
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'  #db type: root folder of project
+# db url comes from heroku postgres add-on
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///data.db')  # sql lite db is default db if database url value not found
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = keys['secret_key']
 api = Api(app)
